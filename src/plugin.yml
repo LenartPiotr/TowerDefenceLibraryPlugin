@@ -1,0 +1,5 @@
+name: TowerDefenceLibrary
+version: 0.1
+author: Lenart Piotr
+main: lenart.piotr.plugins.towerdefencelib.Main
+api-version: 1.13
