@@ -1,5 +1,6 @@
 package lenart.piotr.plugins.towerdefencelib.inventory;
 
+import lenart.piotr.plugins.towerdefencelib.utils.ColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,6 +20,11 @@ public class InventoryBuilder {
         this.title = title;
     }
 
+    private InventoryBuilder(int rows, String title, char titleColorFeatureCharacter) {
+        this.rows = Math.min(6, Math.max(1, rows));
+        this.title = ColorUtils.fix(title, titleColorFeatureCharacter);
+    }
+
     public static InventoryBuilder chest(int rows) {
         return new InventoryBuilder(rows, "Inventory");
     }
@@ -36,12 +42,24 @@ public class InventoryBuilder {
         return this;
     }
 
+    public InventoryBuilder title(String title, char titleColorFeatureCharacter) {
+        this.title = ColorUtils.fix(title, titleColorFeatureCharacter);
+        return this;
+    }
+
     public InventoryBuilder item(int slot, ItemStack item) {
         manualSlots.put(slot, item);
         return this;
     }
 
     public InventoryBuilder fill(ItemStack item) {
+        for (int i = 0; i < rows * 9; i++) {
+            manualSlots.put(i, item);
+        }
+        return this;
+    }
+
+    public InventoryBuilder fillEmpty(ItemStack item) {
         for (int i = 0; i < rows * 9; i++) {
             if (!manualSlots.containsKey(i)) {
                 manualSlots.put(i, item);

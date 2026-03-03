@@ -1,5 +1,6 @@
 package lenart.piotr.plugins.towerdefencelib.inventory;
 
+import lenart.piotr.plugins.towerdefencelib.utils.ColorUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -22,14 +23,17 @@ public class ItemBuilder {
 
     private final ItemStack item;
     private final ItemMeta meta;
+    private final char featureColorCharacter;
 
     private ItemBuilder(Material material) {
         this.item = new ItemStack(material);
         this.meta = item.getItemMeta();
+        this.featureColorCharacter = '&';
     }
     private ItemBuilder(ItemStack item) {
         this.item = item.clone();
         this.meta = this.item.getItemMeta();
+        this.featureColorCharacter = '&';
     }
 
     public static ItemBuilder of(Material material) {
@@ -64,19 +68,19 @@ public class ItemBuilder {
         return this;
     }
     public ItemBuilder name(String name) {
-        meta.setDisplayName(name);
+        meta.setDisplayName(ColorUtils.fix(name, featureColorCharacter));
         return this;
     }
     public ItemBuilder lore(String... lines) {
         List<String> lore = new ArrayList<>();
         Collections.addAll(lore, lines);
-        meta.setLore(lore);
+        meta.setLore(ColorUtils.fix(lore, featureColorCharacter));
         return this;
     }
     public ItemBuilder addLore(String line) {
         List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
         lore.add(line);
-        meta.setLore(lore);
+        meta.setLore(ColorUtils.fix(lore, featureColorCharacter));
         return this;
     }
     public ItemBuilder modelData(Integer data) {
